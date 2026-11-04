@@ -696,9 +696,14 @@ namespace Sexy
 
         public void AddExtremeFeverEffect()
         {
+            AddExtremeFeverEffect(mGoalPegs.Count == 0 && mNonGoalPegs.Count == 0);
+        }
+
+        /// <summary>Port: AddExtremeFeverEffect with "ultra" given, so the debug menu can show either text.</summary>
+        public void AddExtremeFeverEffect(bool ultra)
+        {
             mBoard.mEffectMgr.EraseAllOfType(0x1f);
             mBoard.mEffectMgr.EraseAllOfType(0x29);
-            bool ultra = mGoalPegs.Count == 0 && mNonGoalPegs.Count == 0;
             bool zoomed = mBoard.mZoomActive; // SexyAppBase::Is3DAccelerated() is always true here
             mBoard.mEffectMgr.AddExtremeFever((float)0x145, (float)(zoomed ? 0x32 : 100), ultra, 0);
         }

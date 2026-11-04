@@ -142,6 +142,14 @@ namespace Sexy
                         theApp.mWidgetManager.KeyChar(new SexyChar(c));
                     }
                     break;
+                case "press":
+                {
+                    // press:F:F1 - a key (a KeyCode name) pressed and released.
+                    KeyCode aKey = Enum.Parse<KeyCode>(s.mArg);
+                    theApp.mWidgetManager.KeyDown(aKey);
+                    theApp.mWidgetManager.KeyUp(aKey);
+                    break;
+                }
                 case "enter":
                     theApp.mWidgetManager.KeyDown(KeyCode.Return);
                     theApp.mWidgetManager.KeyUp(KeyCode.Return);

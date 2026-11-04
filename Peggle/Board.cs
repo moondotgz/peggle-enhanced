@@ -3282,6 +3282,12 @@ namespace Sexy
             {
                 return;
             }
+            // Port debug aid: F1 opens the debug menu (SEXY_DEBUG_MENU=1).
+            if (theKey == KeyCode.F1 && DebugMenuDialog.gEnabled)
+            {
+                mApp.DoDebugMenu();
+                return;
+            }
             if (theKey == KeyCode.Return)
             {
                 MouseDown(mWidgetManager.mLastMouseX, mWidgetManager.mLastMouseY, 1);

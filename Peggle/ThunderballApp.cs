@@ -115,6 +115,9 @@ namespace Sexy
 
         /// <summary>Port addition: a newer Peggle Enhanced release is out (UpdateChecker).</summary>
         public const int DIALOG_UPDATE_AVAILABLE = 62;
+
+        /// <summary>Port debug aid: the debug menu (DebugMenuDialog, SEXY_DEBUG_MENU=1).</summary>
+        public const int DIALOG_DEBUG_MENU = 63;
     }
 
     /// <summary>Port addition: the Menu Theme choices of the port options (ThunderballApp.mMenuTheme).</summary>
@@ -730,6 +733,19 @@ namespace Sexy
 #endif
             dialog.DoScroll(1);
             AddDialog(DialogId.DIALOG_PORT_OPTIONS, dialog);
+        }
+
+        /// <summary>Port debug aid: opens the debug menu over the paused board (DebugMenuDialog).</summary>
+        public void DoDebugMenu()
+        {
+            if (mBoard == null || GetDialog(DialogId.DIALOG_DEBUG_MENU) != null)
+            {
+                return;
+            }
+            PauseBoard(true);
+            DebugMenuDialog dialog = new DebugMenuDialog(this);
+            SexyUtil.PositionDialog(dialog, DIALOG_DEFAULT_WIDTH, false, -1);
+            AddDialog(DialogId.DIALOG_DEBUG_MENU, dialog);
         }
 
         /// <summary>Port addition: whether the loading screen takes the Peggle Extreme look (Last Played, after an Extreme level).</summary>

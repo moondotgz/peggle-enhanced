@@ -9,6 +9,12 @@ namespace Sexy
         /// <summary>Port debug aid (not in the original): SEXY_DEBUG_FEVER=1 makes the first peg hit of a level start Extreme Fever.</summary>
         public static readonly bool gDebugFever = Environment.GetEnvironmentVariable("SEXY_DEBUG_FEVER") == "1";
 
+        /// <summary>
+        /// Port debug aid (DebugMenuDialog): the next peg hit starts Extreme Fever (1), or Ultra Extreme Fever (2,
+        /// every other peg counts as hit too). 0 when nothing is set up.
+        /// </summary>
+        public int mDebugFeverNext;
+
         private const int KILLBALL_TIME1 = 1500;
 
         private const int KILLBALL_TIME2 = 1000;
@@ -97,9 +103,10 @@ namespace Sexy
             {
                 mInt38 = KILLBALL_TIME2;
             }
-            if (gDebugFever && !mDimLowObjects)
+            if ((gDebugFever || mDebugFeverNext != 0) && !mDimLowObjects)
             {
-                // Port debug aid: every other orange peg counts as already hit, so this hit starts Extreme Fever.
+                // Port debug aid: every other orange peg counts as already hit, so this hit starts Extreme Fever;
+                // for Ultra Extreme Fever every other peg does.
                 foreach (PhysObj aGoal in mGoalPegs)
                 {
                     if (aGoal != thePeg)
@@ -108,6 +115,18 @@ namespace Sexy
                     }
                 }
                 mGoalPegs.RemoveWhere(aGoal => aGoal != thePeg);
+                if (mDebugFeverNext == 2)
+                {
+                    foreach (PhysObj aPeg2 in mNonGoalPegs)
+                    {
+                        if (aPeg2 != thePeg)
+                        {
+                            aPeg2.mPegInfo.SetHit(true);
+                        }
+                    }
+                    mNonGoalPegs.RemoveWhere(aPeg2 => aPeg2 != thePeg);
+                }
+                mDebugFeverNext = 0;
             }
             mInt170 = CalcScoreMult(mGoalPegs.Count);
             aPeg.SetHit(true);
